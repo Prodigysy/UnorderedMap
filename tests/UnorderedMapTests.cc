@@ -29,3 +29,26 @@ TEST(UnorderedMap, Methods1) {
     
 }
 
+TEST(UnorderedMap, Methods2) {
+    UnorderedMap<int, std::string> map(10);
+
+    map.insert(1, "One");
+    map.insert(1, "OneOne");
+    map.insert(2, "Two");
+    map.insert(2, "TwoTwo");
+    map.insert(2, "TwoTwoTwo");
+    map.insert(5, "Five");
+    
+    auto item = map.search(2);
+    ASSERT_TRUE(*item == "Two");
+
+    map.insert_or_assign(12, "Twelve");
+    ASSERT_TRUE(map.search(12));
+
+    map.insert_or_assign(2, "TwoTwoTwo");
+    auto item2 = map.search(2);
+    ASSERT_TRUE(*item2 == "TwoTwoTwo");
+
+    
+}
+
