@@ -52,3 +52,29 @@ TEST(UnorderedMap, Methods2) {
     
 }
 
+TEST(UnorderedMap, Methods3) {
+    UnorderedMap<int, std::string> map(10);
+
+    map.insert(1, "One");
+    map.insert(1, "OneOne");
+    map.insert(2, "Two");
+    map.insert(2, "TwoTwo");
+    map.insert(2, "TwoTwoTwo");
+    map.insert(5, "Five");
+
+    map.erase(1);
+    map.erase(1);
+    ASSERT_FALSE(map.search(1));
+
+    ASSERT_TRUE(map.count(2) == 3);
+
+    ASSERT_TRUE(map.contains("Five") == 1);
+    ASSERT_TRUE(map.contains("Six") == 0);
+}
+
+TEST(UnorderedMap, Task) {
+    ASSERT_TRUE(romanToDecimal("LXXV") == 75);
+    ASSERT_TRUE(romanToDecimal("XCIX") == 99);
+    ASSERT_TRUE(romanToDecimal("DXLIX") == 549);
+    ASSERT_TRUE(romanToDecimal("MCMLXXVI") == 1976);
+}
