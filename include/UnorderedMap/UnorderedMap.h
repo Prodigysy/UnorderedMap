@@ -70,3 +70,30 @@ public:
 		}
 		return *this;
 	}
+
+	void print() const {
+		size_t i = 0;
+		std::cout << "HashTable:" << std::endl;
+		for (auto& list : _data) {
+			std::cout << "Bucket " << i++ << ": ";
+			for (auto& pair : list) {
+				std::cout << "{" << pair.key << ": " << pair.value << "} ";
+			}
+			std::cout << std::endl;
+		}
+	}
+	void insert(const Key& key, const Value& value) {
+		double load_factor = _size / (_data.size() + 0.0);
+		if (load_factor > 0.6) grow();
+		size_t idx = hash(key);
+		_data[idx].emplace_back(key, value);
+		++_size;
+	}
+	void insert_or_assign(const Key& key, const Value& value) {
+		auto result = search(key);
+		if (!result) {
+			insert(key, value);
+			return;
+		}
+		*result = value;
+	}
