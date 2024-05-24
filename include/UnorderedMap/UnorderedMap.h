@@ -97,3 +97,75 @@ public:
 		}
 		*result = value;
 	}
+	bool contains(const Value& value) {
+		for (auto& list : _data) {
+			for (auto& pair : list) {
+				if (pair.value == value)
+					return true;
+			}
+		}
+		return false;
+	}
+	Value* search(const Key& key) {
+		size_t idx = hash(key);
+		for (auto& pair : _data[idx]) {	
+			if (pair.key == key)
+				return &pair.value;
+		}
+		return nullptr;
+	}
+	bool erase(const Key& key) {
+		size_t idx = hash(key);
+		auto& list = _data[idx];
+		for (auto it = list.begin(); it != list.end(); ++it) {
+			if (it->key == key) {
+				list.erase(it);
+				--_size;
+				return true;
+			}
+		}
+		return false;
+	}
+	int count(const Key& key) {
+		int count = 0;
+		size_t idx = hash(key);
+		for (auto& pair : _data[idx]) {
+			if (pair.key == key) ++count;
+		}
+		return count;
+	}
+};
+int romanHash(const char& roman) {
+	switch (roman) {
+	case 'I': return 1;
+	case 'V': return 5;
+	case 'X': return 10;
+	case 'L': return 50;
+	case 'C': return 100;
+	case 'D': return 500;
+	case 'M': return 1000;
+	default: return -1;
+	}
+}
+int romanToDecimal(const std::string& roman) {
+	UnorderedMap<char, int> romanMap(7);
+	for (const char& c : roman) {
+		romanMap.insert(c, romanHash(c));
+	}
+
+	int decimal = 0;
+	int prevValue = 0;
+
+	for (size_t i = 0; i < roman.size(); ++i) {
+		int value = *romanMap.search(roman[i]);
+		decimal += value;
+
+		if (value > prevValue) {
+			decimal -= 2 * prevValue;
+		}
+
+		prevValue = value;
+	}
+
+	return decimal;
+}
