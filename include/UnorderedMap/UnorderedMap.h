@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <list>
 #include <random>
+#include <functional> 
 
 template<typename Key, typename Value, template<typename...> class Container = std::list>
 class UnorderedMap {
@@ -17,8 +18,8 @@ class UnorderedMap {
 	std::vector<Container<Pair>> _data;
 	size_t _size;
 
-	size_t hash(const Key& key) const { //деления ключа на размер таблицы
-		return key % _data.size();
+	size_t hash(const Key& key) const {
+		return std::hash<Key>{}(key) % _data.size();
 	}
 
 	void grow() {
